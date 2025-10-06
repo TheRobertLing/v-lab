@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <script>
+      const q = window.matchMedia('(prefers-color-scheme: dark)');
+      const stored = localStorage.getItem('vui-theme');
+      const isDark = stored ? stored === 'dark' : q.matches;
+      document.documentElement.classList.toggle('dark', isDark);
+      localStorage.setItem('vui-theme', isDark ? 'dark' : 'light');
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>V-Lab</title>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
