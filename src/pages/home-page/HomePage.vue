@@ -33,7 +33,7 @@ const { theme, toggleDark } = useDark();
           class="hover:text-foreground p-1 transition-colors"
         />
         <TextLinkWithArrow
-          href="https://github.com"
+          href="https://github.com/TheRobertLing/v-lab"
           text="github"
           target="_blank"
           rel="noopener noreferrer"
