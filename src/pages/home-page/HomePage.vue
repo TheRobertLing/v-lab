@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ArrowDown } from "lucide-vue-next";
-import { useDark } from "@/composables";
-import { getShowcaseList } from "@/routes";
+import { useDark } from "@/shared/composables";
+import { showCaseList } from "@/routes";
 import TextLinkWithArrow from "./TextLinkWithArrow.vue";
 import ShowcaseCard from "./ShowcaseCard.vue";
 
@@ -15,9 +15,7 @@ const { theme, toggleDark } = useDark();
       class="relative flex h-screen flex-col items-center justify-center text-center"
     >
       <header>
-        <h1 class="text-3xl font-semibold">
-          <span class="text-[#42b883]">V</span>-Lab
-        </h1>
+        <h1 class="text-3xl font-semibold"><span class="text-[#42b883]">V</span>-Lab</h1>
         <p class="text-muted-foreground mt-4">
           a showcase of interactive experiments built with vue.js
         </p>
@@ -84,11 +82,7 @@ const { theme, toggleDark } = useDark();
         class="mb-24 flex max-w-5xl flex-wrap justify-center gap-8"
         aria-label="Showcase components list"
       >
-        <ShowcaseCard
-          v-for="(item, index) in getShowcaseList()"
-          :key="index"
-          v-bind="item"
-        />
+        <ShowcaseCard v-for="(item, index) in showCaseList" :key="index" v-bind="item" />
       </div>
     </section>
   </main>

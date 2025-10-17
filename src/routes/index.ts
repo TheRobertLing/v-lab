@@ -3,16 +3,16 @@ import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router"
 import HomePage from "@/pages/home-page/HomePage.vue";
 import NetworkErrorPage from "@/pages/error-pages/NetworkErrorPage.vue";
 import PageNotFoundPage from "@/pages/error-pages/PageNotFoundPage.vue";
+import type { Component } from "vue";
 
-export type ShowcaseRoute = RouteRecordRaw & {
-  previewImgPath: string;
-};
-
-export interface ShowcaseItem {
+export type ShowcaseRoute = {
   name: string;
   path: string;
   previewImgPath: string;
-}
+  component: () => Promise<Component>;
+};
+
+export type ShowcaseItem = Omit<ShowcaseRoute, "component">;
 
 const showcases: ShowcaseRoute[] = [
   {
@@ -21,15 +21,19 @@ const showcases: ShowcaseRoute[] = [
     previewImgPath: "/showcase-images/bouncing-dvd-logo.svg",
     component: () => import("@/pages/showcases/bouncing-dvd-logo/BouncingDVDLogoPage.vue"),
   },
+  {
+    name: "Youtube Iframe Embed",
+    path: "/youtube-iframe-embed",
+    previewImgPath: "/showcase-images/youtube-iframe-embed.png",
+    component: () => import("@/pages/showcases/youtube-iframe-embed/YouTubeIframeEmbedPage.vue"),
+  },
 ];
 
-export function getShowcaseList(): ShowcaseItem[] {
-  return showcases.map((showcase) => ({
-    name: String(showcase.name),
-    path: showcase.path,
-    previewImgPath: showcase.previewImgPath,
-  }));
-}
+export const showCaseList: ShowcaseItem[] = showcases.map((showcase) => ({
+  name: showcase.name,
+  path: showcase.path,
+  previewImgPath: showcase.previewImgPath,
+}));
 
 const routes: RouteRecordRaw[] = [
   {
@@ -37,9 +41,7 @@ const routes: RouteRecordRaw[] = [
     path: "/",
     component: HomePage,
   },
-
   ...showcases,
-
   {
     name: "Network Error",
     path: "/network-error",
@@ -55,10 +57,16 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    } else {
+      return { top: 0 };
+    }
+  },
 });
 
-router.onError((error) => {
-  console.error("Router error:", error);
+router.onError(() => {
   router.push({ name: "NetworkError" });
 });
 
